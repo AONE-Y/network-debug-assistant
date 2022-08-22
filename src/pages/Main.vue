@@ -9,19 +9,25 @@
           content
         </a-layout-content>
       </a-layout-sider>
-      <a-layout-content>
-        <a-layout-content class="content1" style="height: 65%">
-         <message-receive></message-receive>
-        </a-layout-content>
-        <a-layout-content class="content1" style="background-color: yellow;height: 35%">Content</a-layout-content>
+      <a-layout-content style="height: 100%">
+        <a-layout class="content1" style="height: 70%">
+          <message-receive></message-receive>
+        </a-layout>
+        <a-layout style="height: 30%;background-color: #eae9e9">
+         <message-send></message-send>
+
+        </a-layout>
       </a-layout-content>
     </a-layout>
+
   </div>
 </template>
 <script lang="ts" setup>
 import SelectionPanel from "../components/SelectionPanel.vue";
 import MessageReceive from "../components/MessageReceive.vue";
-import { reactive} from "vue";
+import {reactive, ref} from "vue";
+import MessageSend from "../components/MessageSend.vue";
+
 
 
 const handleSubmit = (data: any) => {
@@ -58,7 +64,7 @@ const handleSubmit = (data: any) => {
 }
 
 .layout :deep(.arco-layout-content) {
-  background-color: rgb(var(--arcoblue-6));
+
 }
 
 .layout:deep(.arco-form-item) {

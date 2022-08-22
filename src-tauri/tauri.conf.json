@@ -57,9 +57,11 @@
       {
         "fullscreen": false,
         "height": 800,
+        "minHeight": 800,
         "resizable": true,
         "title": "网络调试助手",
-        "width": 1000
+        "width": 1000,
+        "minWidth": 867
       }
     ]
   }
