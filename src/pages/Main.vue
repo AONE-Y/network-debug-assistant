@@ -3,7 +3,7 @@
     <a-layout style="width:100%;height: 100%;position: absolute">
       <a-layout-sider class="sider" theme="dark" style="width: 30%">
         <a-layout-content class="content1" style="background-color: white;height: 60%">
-          <selection-panel></selection-panel>
+          <selection-panel :receive-info="receiveInfo"></selection-panel>
         </a-layout-content>
         <a-layout-content class="content1" style="background-color: red;height: 40%">
           content
@@ -11,11 +11,10 @@
       </a-layout-sider>
       <a-layout-content style="height: 100%">
         <a-layout class="content1" style="height: 70%">
-          <message-receive></message-receive>
+          <message-receive :receive-info="receiveInfo"></message-receive>
         </a-layout>
         <a-layout style="height: 30%;background-color: #eae9e9">
-         <message-send></message-send>
-
+          <message-send></message-send>
         </a-layout>
       </a-layout-content>
     </a-layout>
@@ -28,8 +27,14 @@ import MessageReceive from "../components/MessageReceive.vue";
 import {reactive, ref} from "vue";
 import MessageSend from "../components/MessageSend.vue";
 
-
-
+const receiveInfo = reactive({
+  decode: 1,
+  limit: "2m",
+  hidden: false,
+  receiveMessage: false,
+  autoSave: false,
+  data: "init\ninit\ninit\ninit\ninit\ninit\ninit\ninit\ninit\ninit\ninit\ninit\ninit\ninit\ninit\ninit\n"
+})
 const handleSubmit = (data: any) => {
   console.log(data)
 }

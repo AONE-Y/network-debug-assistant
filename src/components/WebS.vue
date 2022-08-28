@@ -37,15 +37,23 @@
 <script lang="ts" setup>
 const props = defineProps<{
   form: {
-    type: 'tcp-s',
-    localAddr: "127.0.0.1",
-    localPort: 8888,
-    localPath:'/',
-    dataModel:0,
-    maskProcess:0,
-    addressReuse: 0,
-    keepAlive: 0,
-    protocols: '提供的文件句柄无效。',
+    type: string,
+    addr: string,
+    wsAddr: string,
+    port: number,
+    localAddr: string,
+    localPort: number,
+    localPath: string,
+    addressReuse: number,
+    keepAlive: number,
+    boardCast: number,
+    dataModel: number,
+    maskProcess: number,
+    additionalHeaders0: string,
+    additionalHeaders1: string,
+    additionalHeaders2: string,
+    threads: number,
+    protocols: string,
     info: string
   }
 }>();

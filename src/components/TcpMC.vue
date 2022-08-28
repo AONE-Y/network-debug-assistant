@@ -30,12 +30,23 @@
 <script lang="ts" setup>
 const props = defineProps<{
   form: {
-    type: 'tcp-mc',
-    addr: "127.0.0.1",
-    port: 8888,
-    keepAlive: 0,
-    threads: 1,
-    protocols: '提供的文件句柄无效。',
+    type: string,
+    addr: string,
+    wsAddr: string,
+    port: number,
+    localAddr: string,
+    localPort: number,
+    localPath: string,
+    addressReuse: number,
+    keepAlive: number,
+    boardCast: number,
+    dataModel: number,
+    maskProcess: number,
+    additionalHeaders0: string,
+    additionalHeaders1: string,
+    additionalHeaders2: string,
+    threads: number,
+    protocols: string,
     info: string
   }
 }>();

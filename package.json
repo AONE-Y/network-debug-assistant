@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@tauri-apps/api": "^1.0.2",
+    "iconv-lite": "^0.5.2",
     "vue": "^3.2.37"
   },
   "devDependencies": {

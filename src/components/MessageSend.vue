@@ -43,15 +43,15 @@
     <a-layout-header style="height: 10%">
       <a-button size="mini" style="margin-top: 6%">关闭通道</a-button>
     </a-layout-header>
-    <a-layout-content style="height: 90%;padding-top: 20%">
-      <a-space direction="vertical" size="medium" style="height: 100%" fill>
-        <a-button size="mini">发送文件</a-button>
+    <a-layout-content style="height: 90%;display: flex;justify-content: center;align-content: center">
+      <span style="display: flex;flex-wrap: wrap;align-items: center;justify-content: center;margin-top: 6%;margin-bottom: 6%">
+          <a-button size="mini">发送文件</a-button>
         <a-button size="mini">历史记录</a-button>
         <a-tooltip content="定时发送(ms)" :content-style="{fontSize:'9px',fontStyle:'italic'}">
           <a-input-number :style="{width:'72px',height:'24px',fontSize: '1px'}" v-model="sendInfo.timer" :min=0 hide-button></a-input-number>
         </a-tooltip>
         <a-button size="mini" type="primary" style="height: 60px;">&emsp;发送&emsp;</a-button>
-      </a-space>
+      </span>
     </a-layout-content>
   </a-layout-sider>
 </template>
