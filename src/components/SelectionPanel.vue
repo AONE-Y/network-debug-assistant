@@ -29,6 +29,7 @@
   <a-button type="primary" size="large" :status="button.isConnected?'danger':'normal'" long @click="handleConnection">
     {{ button.isConnected ? '断开' : '连接' }}
   </a-button>
+  
 </template>
 
 <script lang="ts" setup>
@@ -98,10 +99,17 @@ const proxy = getCurrentInstance()?.proxy
 const unlisten = async () => {
   await listen<string>("msg-rust", (event) => {
     let payload = event.payload;
+    console.log(payload);
+
     let decodeOption = props.receiveInfo.decode;
-    let arr = encode(payload, 'utf8')
+    let arr = encode(payload.data, 'utf8')
     console.log(arr)
     console.log(decodeOption)
+    if(props.receiveInfo.receiveMessage){
+      let date=new Date()
+  
+      props.receiveInfo.data += "<span style='color:red'>"+"["+payload.fromAddr+"]" +" "+date.toLocaleString()+":"+date.getMilliseconds()+"</span>"+ "\n"
+    }
     if (decodeOption == 1) {
       props.receiveInfo.data += decode(arr, 'ascii') + "\n"
     } else if (decodeOption === 2) {

@@ -18,6 +18,7 @@ use tauri::{Manager, Window};
 use std::io::{Read, Write};
 use std::net::{IpAddr, Shutdown, TcpListener};
 use std::os::unix::io::AsRawFd;
+use std::os::unix::net::SocketAddr;
 use std::str::FromStr;
 use std::sync::{Arc, Mutex};
 use std::thread::sleep;
@@ -63,7 +64,11 @@ struct TcpServerInfo<'a> {
     addressReuse: bool,
     keepAlive: bool,
 }
-
+#[derive(Debug,Serialize,Deserialize,Clone)]
+struct TcpServerData{
+    fromAddr:String,
+    data:String
+}
 lazy_static! {
     static ref MAPS: Arc<Mutex<HashMap<String, i32>>> = Arc::new(Mutex::new(HashMap::new()));
 }
@@ -105,16 +110,16 @@ fn tcpServerOn(info: TcpServerInfo,window:Window) -> String {
             }
             let mut stream = stream.unwrap();
             let mut buffer = [0; 1024];
+       
             stream.read(&mut buffer).unwrap();
             stream.write("HTTP/1.1 200 OK\r\n\r\n".as_bytes()).unwrap();
             stream.write("HTTP/1.1 200 OK\r\n\r\n".as_bytes()).unwrap();
             // stream.shutdown(Shutdown::Both).unwrap();
             // println!("Request: {}", );
-            print!("ttttt");
-            // stream.read(&mut buffer).unwrap();
-         
-            // let msg=String::from_utf8_lossy(&buffer);
-            window.emit("msg-rust", String::from_utf8_lossy(&buffer[..])).expect("error????????");
+            window.emit("msg-rust", TcpServerData{
+                fromAddr:stream.peer_addr().unwrap().to_string(),
+                data: String::from_utf8_lossy(&buffer[..]).to_string()
+            }).expect("error????????");
         }
         println!("gadfgagasg");
     });
