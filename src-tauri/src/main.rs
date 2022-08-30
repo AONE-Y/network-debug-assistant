@@ -102,7 +102,6 @@ fn tcpServerOn(info: TcpServerInfo,window:Window) -> String {
         }
     };
     let fd = tcp.as_raw_fd();
-    window.emit_all("msg-rust", "859644fdsafjk".to_string()).unwrap();
    spawn(async move {
         for stream in tcp.incoming() {
             if stream.is_err() {

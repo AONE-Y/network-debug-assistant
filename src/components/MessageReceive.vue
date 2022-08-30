@@ -2,9 +2,9 @@
   <a-layout-header style="background-color: #eae9e9; height: 6%">
     <a-form-item label="限制" style="height: 100%; margin-left: 1%">
       <a-select
-        v-model="props.receiveInfo.limit"
-        size="mini"
-        style="width: 95px"
+          v-model="props.receiveInfo.limit"
+          size="mini"
+          style="width: 95px"
       >
         <a-option value="512k">512 KB</a-option>
         <a-option value="1m">1 MB</a-option>
@@ -21,7 +21,8 @@
       <a-space size="large" style="margin-left: 2%">
         <a-checkbox v-model="props.receiveInfo.hidden">不显示数据</a-checkbox>
         <a-checkbox v-model="props.receiveInfo.receiveMessage"
-          >添加接收信息</a-checkbox
+        >添加接收信息
+        </a-checkbox
         >
         <a-checkbox v-model="props.receiveInfo.autoSave">自动保存</a-checkbox>
       </a-space>
@@ -32,8 +33,8 @@
   </a-layout-header>
   <a-layout-content style="background-color: white">
     <a-tabs
-      style="height: 100%; background-color: #eae9e9"
-      v-model:active-key="props.receiveInfo.decode"
+        style="height: 100%; background-color: #eae9e9"
+        v-model:active-key="props.receiveInfo.decode"
     >
       <template #extra>
         <a-button size="mini" @click="handleClear">清除</a-button>
@@ -44,130 +45,32 @@
       <a-tab-pane :key="1" title="ASCII">
         <!-- <a-textarea style="height: 87%;position: absolute;width: 100%;display: flex" disabled
                     v-model="props.receiveInfo.data"/> -->
-        <div
-          id="msg"
-          style="
-            background-color: white;
-            height: 87%;
-            position: absolute;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            overflow-y: scroll;
-            word-break: break-all;
-            text-align: left;
-          "
-        ></div>
+        <div class="msg"></div>
       </a-tab-pane>
       <a-tab-pane :key="2" title="UTF8">
-        <div
-          id="msg"
-          style="
-            background-color: white;
-            height: 87%;
-            position: absolute;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            overflow-y: scroll;
-            word-break: break-all;
-            text-align: left;
-          "
-        ></div>
+        <div class="msg"></div>
       </a-tab-pane>
       <a-tab-pane :key="3" title="UTF16">
-        <div
-          id="msg"
-          style="
-            background-color: white;
-            height: 87%;
-            position: absolute;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            overflow-y: scroll;
-            word-break: break-all;
-            text-align: left;
-          "
-        ></div>
+        <div class="msg"></div>
       </a-tab-pane>
       <a-tab-pane :key="4" title="UTF32">
-        <div
-          id="msg"
-          style="
-            background-color: white;
-            height: 87%;
-            position: absolute;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            overflow-y: scroll;
-            word-break: break-all;
-            text-align: left;
-          "
-        ></div>
+        <div class="msg" ></div>
       </a-tab-pane>
       <a-tab-pane :key="5" title="UTF16-BE">
-        <div
-          id="msg"
-          style="
-            background-color: white;
-            height: 87%;
-            position: absolute;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            overflow-y: scroll;
-            word-break: break-all;
-            text-align: left;
-          "
-        ></div>
+        <div class="msg"></div>
       </a-tab-pane>
       <a-tab-pane :key="6" title="UTF32-BE">
-        <div
-          id="msg"
-          style="
-            background-color: white;
-            height: 87%;
-            position: absolute;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            overflow-y: scroll;
-            word-break: break-all;
-            text-align: left;
-          "
-        ></div>
+        <div class="msg"></div>
       </a-tab-pane>
       <a-tab-pane :key="7" title="HEX">
-        <div
-          id="msg"
-          style="
-            background-color: white;
-            height: 87%;
-            position: absolute;
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            overflow-y: scroll;
-            word-break: break-all;
-            text-align: left;
-          "
-        ></div>
+        <div class="msg"></div>
       </a-tab-pane>
     </a-tabs>
   </a-layout-content>
 </template>
 
 <script lang="ts" setup>
-import { reactive } from "vue";
+import {reactive} from "vue";
 
 const props = defineProps<{
   receiveInfo: {
@@ -176,15 +79,18 @@ const props = defineProps<{
     hidden: boolean;
     receiveMessage: boolean;
     autoSave: boolean;
-    data: string;
+    data:Array<string>
   };
 }>();
 const test = reactive(["<span>123145</span>", "fdasjkfhk"]);
 const handleClear = () => {
-  let node = document.getElementById("msg");
-  while (node?.hasChildNodes()) {
-    if (node.lastChild != null) {
-      node.removeChild(node?.lastChild);
+  let nodes = document.getElementsByClassName("msg");
+  for (let i = 0; i < nodes.length; i++) {
+    let node = nodes.item(i);
+    while (node?.hasChildNodes()) {
+      if (node.lastChild != null) {
+        node.removeChild(node?.lastChild);
+      }
     }
   }
 };
@@ -199,5 +105,18 @@ const testMethod = () => {
   justify-content: flex-end;
   flex: 1;
   margin-right: 20px;
+}
+
+.msg {
+  background-color: white;
+  height: 87%;
+  position: absolute;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  overflow-y: scroll;
+  word-break: break-word;
+  text-align: left;
 }
 </style>

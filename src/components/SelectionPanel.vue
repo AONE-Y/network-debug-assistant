@@ -29,7 +29,7 @@
   <a-button type="primary" size="large" :status="button.isConnected?'danger':'normal'" long @click="handleConnection">
     {{ button.isConnected ? '断开' : '连接' }}
   </a-button>
-  
+
 </template>
 
 <script lang="ts" setup>
@@ -43,7 +43,7 @@ import UdpBoard from "../components/UdpBoard.vue";
 import WebS from "../components/WebS.vue";
 import WebC from "../components/WebC.vue";
 import WebMc from "../components/WebMc.vue";
-import {listen} from "@tauri-apps/api/event";
+import {emit, listen} from "@tauri-apps/api/event";
 import {asciiToByte, byteToAscii, utf8ToByte} from "../utils/stringByte";
 import {decode, encode} from "iconv-lite";
 import {arrToHex} from "../utils/Utils";
@@ -56,20 +56,14 @@ const props = defineProps<{
     hidden: boolean,
     receiveMessage: boolean,
     autoSave: boolean,
-    data: String
+    data: Array<string>
   }
 }>();
-let b = "放大随机发货";
-let d = decode(encode(b, "UTF8"),'utf32be')
-
-console.log(d);
-
-const a = utf8ToByte(b)
-const c = byteToAscii(a)
-console.log(b);
-console.log(a)
-// console.log(utf8ToByte(b))
-console.log(c);
+const handleTest = () => {
+  emit("msg-rust", {fromAddr: "127.0.0.1:9999", data: "dfafdgagdadfa"})
+  emit("msg-rust", {fromAddr: "127.0.0.1:9999", data: "dfafdgagdadfa1"})
+  emit("msg-rust", {fromAddr: "127.0.0.1:9999", data: "dfafdgagdadfa2"})
+}
 const form = reactive({
   type: 'tcp-s',
   addr: "127.0.0.1",
@@ -103,32 +97,50 @@ const unlisten = async () => {
 
     let decodeOption = props.receiveInfo.decode;
     let arr = encode(payload.data, 'utf8')
-    console.log(arr)
-    console.log(decodeOption)
-    if(props.receiveInfo.receiveMessage){
-      let date=new Date()
-  
-      props.receiveInfo.data += "<span style='color:red'>"+"["+payload.fromAddr+"]" +" "+date.toLocaleString()+":"+date.getMilliseconds()+"</span>"+ "\n"
-    }
+    let date = new Date()
+    let titleText = "[ " + payload.fromAddr + " ]" + "      " + date.toLocaleString() + ":" + date.getMilliseconds();
+    let childText=""
     if (decodeOption == 1) {
-      props.receiveInfo.data += decode(arr, 'ascii') + "\n"
+      childText = decode(arr, 'ascii')
     } else if (decodeOption === 2) {
-      props.receiveInfo.data += decode(arr, 'utf8') + "\n"
+      childText = decode(arr, 'utf8')
     } else if (decodeOption === 3) {
-      props.receiveInfo.data += decode(arr, 'utf16') + "\n"
+      childText = decode(arr, 'utf16')
     } else if (decodeOption === 4) {
-      props.receiveInfo.data += decode(arr, 'utf32') + "\n"
+      childText = decode(arr, 'utf32')
     } else if (decodeOption === 5) {
-      props.receiveInfo.data += decode(arr, 'utf16-be') + "\n"
+      childText = decode(arr, 'utf16-be')
     } else if (decodeOption === 6) {
-      props.receiveInfo.data += decode(arr, 'utf32be') + "\n"
+      childText = decode(arr, 'utf32be')
     } else if (decodeOption == 7) {
-      props.receiveInfo.data += arrToHex(arr) + "\n"
+      childText = arrToHex(arr)
+    }
+    if (props.receiveInfo.receiveMessage) {
+      props.receiveInfo.data.push(titleText+'\n'+childText)
+    } else {
+      props.receiveInfo.data.push(childText)
+    }
+    if (!props.receiveInfo.hidden){
+      let nodes = document.getElementsByClassName("msg");
+      for (let i = 0; i < nodes.length; i++) {
+        let node = nodes.item(i);
+        let childNode = document.createElement("span");
+        if (props.receiveInfo.receiveMessage) {
+          let title = document.createElement("span");
+          title.style.color = 'blue';
+          title.style.fontSize = '15px'
+          title.innerText = titleText;
+          node?.appendChild(title)
+        }
+        childNode.innerText=childText;
+        node?.appendChild(childNode);
+      }
     }
   });
 }
 unlisten()
 const handleConnection = () => {
+
   switch (form.type) {
     case "tcp-s":
       if (button.isConnected) {

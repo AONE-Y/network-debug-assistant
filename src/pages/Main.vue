@@ -33,7 +33,7 @@ const receiveInfo = reactive({
   hidden: false,
   receiveMessage: false,
   autoSave: false,
-  data: "init&#10;init\ninit\ninit\ninit\ninit\ninit\ninit\ninit\ninit\ninit\ninit\ninit\ninit\ninit\ninit\n"
+  data: new Array()
 })
 const handleSubmit = (data: any) => {
   console.log(data)
